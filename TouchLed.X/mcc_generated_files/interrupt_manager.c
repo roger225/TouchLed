@@ -16,7 +16,7 @@
     all modules selected in the GUI.
     Generation Information :
         Product Revision  :  PIC10 / PIC12 / PIC16 / PIC18 MCUs - 1.81.8
-        Device            :  PIC16F1823
+        Device            :  PIC16F1938
         Driver Version    :  2.04
     The generated drivers are tested against the following:
         Compiler          :  XC8 2.36 and above or later
@@ -54,9 +54,9 @@ void __interrupt() INTERRUPT_InterruptManager (void)
     // interrupt handler
     if(INTCONbits.PEIE == 1)
     {
-        if(PIE1bits.TMR2IE == 1 && PIR1bits.TMR2IF == 1)
+        if(PIE3bits.TMR6IE == 1 && PIR3bits.TMR6IF == 1)
         {
-            TMR2_ISR();
+            TMR6_ISR();
         } 
         else if(PIE1bits.TMR1IE == 1 && PIR1bits.TMR1IF == 1)
         {

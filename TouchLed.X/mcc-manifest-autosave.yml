@@ -2,11 +2,11 @@
 
 manifest_file_version: 1.0.0
 project: TouchLed
-creation_date: 2024-09-15T00:15:16.261+08:00[Asia/Taipei]
+creation_date: 2024-09-15T07:08:23.373+08:00[Asia/Taipei]
 operating_system: Windows 10
 mcc_mode: IDE
 mcc_mode_version: v6.20
-device_name: PIC16F1823
+device_name: PIC16F1938
 compiler: XC8 2.50
 mcc_version: 5.5.1
 mcc_core_version: 5.7.1
@@ -20,3 +20,5 @@ packs: {name: PIC12-16F1xxx_DFP, version: 1.7.242}
 modules:
 - {name: com.microchip.mcc.mcu8.Mcu8PeripheralLibrary, type: CLASSIC, version: 1.82.1}
 - {name: com.microchip.mcc.mTouchLibrary.MTouchLibrary, type: CLASSIC, version: 2.91.2}
+- {name: com.microchip.mcc.foundationservices.library.FoundationServicesLibrary, type: CLASSIC,
+  version: 0.2.3}

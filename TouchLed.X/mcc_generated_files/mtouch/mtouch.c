@@ -43,7 +43,7 @@
 /* ======================================================================= *
  * Definitions
  * ======================================================================= */
-#define MTOUCH_SCAN_TIMER_TICK                  1 //unit us
+#define MTOUCH_SCAN_TIMER_TICK                  32.258 //unit us
 #define MTOUCH_SCAN_RELOAD                      (uint16_t)(65535-((MTOUCH_SCAN_INTERVAL*1000.0)/MTOUCH_SCAN_TIMER_TICK)) 
 #define MTOUCH_LOWPOWER_SCAN_RELOAD             (uint16_t)(65535-((MTOUCH_LOWPOWER_SCAN_INTERVAL*1000.0)/MTOUCH_SCAN_TIMER_TICK)) 
 #define MTOUCH_LOWPOWER_INACTIVE_TIMEOUT_CYCLE  (uint16_t)(MTOUCH_LOWPOWER_INACTIVE_TIMEOUT/MTOUCH_SCAN_INTERVAL)

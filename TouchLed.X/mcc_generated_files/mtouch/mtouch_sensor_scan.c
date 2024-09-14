@@ -40,16 +40,16 @@
 * @prototype    void MTOUCH_CVD_ScanA_0
 *
 * @description  CVD scanA for sensor 0
-*               - name:                         Sensor_AN7
-*               - pin:                          RC3
-*               - analog channel:               AN7
+*               - name:                         Sensor_AN13
+*               - pin:                          RB5
+*               - analog channel:               AN13
 *               - reference type:               MTOUCH_OPTION_REFTYPE_SELF
 *               - guard type:                   MTOUCH_OPTION_GUARDTYPE_IO
 *
 */
 void MTOUCH_CVD_ScanA_0(void)
 {
-    /* Initialize Precharge Source - Sensor itself RC3 */
+    /* Initialize Precharge Source - Sensor itself RB5 */
     asm("BANKSEL        " ___mkstr(MTOUCH_S0_REF_LAT));
     asm("bsf            " ___mkstr(MTOUCH_S0_REF_LAT) " & 0x7F," ___mkstr(MTOUCH_S0_REF_PIN));
 
@@ -109,16 +109,16 @@ void MTOUCH_CVD_ScanA_0(void)
 * @prototype    void MTOUCH_CVD_ScanB_0
 *
 * @description    CVD scanB for sensor 0
-*                - name:                         Sensor_AN7
-*                - pin:                          RC3
-*                - analog channel:               AN7
+*                - name:                         Sensor_AN13
+*                - pin:                          RB5
+*                - analog channel:               AN13
 *                - reference type:               MTOUCH_OPTION_REFTYPE_SELF
 *                - guard type:                   MTOUCH_OPTION_GUARDTYPE_IO
 *
 */
 void MTOUCH_CVD_ScanB_0(void)
 {
-    /* Initialize Precharge Source - Sensor itself RC3 */
+    /* Initialize Precharge Source - Sensor itself RB5 */
     asm("BANKSEL        " ___mkstr(MTOUCH_S0_REF_LAT));
     asm("bcf            " ___mkstr(MTOUCH_S0_REF_LAT) " & 0x7F," ___mkstr(MTOUCH_S0_REF_PIN));
 

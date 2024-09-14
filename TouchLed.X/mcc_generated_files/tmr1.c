@@ -14,7 +14,7 @@
     This source file provides APIs for TMR1.
     Generation Information :
         Product Revision  :  PIC10 / PIC12 / PIC16 / PIC18 MCUs - 1.81.8
-        Device            :  PIC16F1823
+        Device            :  PIC16F1938
         Driver Version    :  2.11
     The generated drivers are tested against the following:
         Compiler          :  XC8 2.36 and above
@@ -68,11 +68,11 @@ void TMR1_Initialize(void)
     //T1GSS T1G_pin; TMR1GE disabled; T1GTM disabled; T1GPOL low; T1GGO done; T1GSPM disabled; 
     T1GCON = 0x00;
 
-    //TMR1H 177; 
-    TMR1H = 0xB1;
+    //TMR1H 253; 
+    TMR1H = 0xFD;
 
-    //TMR1L 224; 
-    TMR1L = 0xE0;
+    //TMR1L 148; 
+    TMR1L = 0x94;
 
     // Clearing IF flag before enabling the interrupt.
     PIR1bits.TMR1IF = 0;
@@ -86,8 +86,8 @@ void TMR1_Initialize(void)
     // Set Default Interrupt Handler
     TMR1_SetInterruptHandler(TMR1_DefaultInterruptHandler);
 
-    // T1CKPS 1:2; T1OSCEN disabled; nT1SYNC do_not_synchronize; TMR1CS FOSC/4; TMR1ON enabled; 
-    T1CON = 0x15;
+    // T1CKPS 1:1; T1OSCEN disabled; nT1SYNC do_not_synchronize; TMR1CS LFINTOSC; TMR1ON enabled; 
+    T1CON = 0x05;
 }
 
 void TMR1_StartTimer(void)

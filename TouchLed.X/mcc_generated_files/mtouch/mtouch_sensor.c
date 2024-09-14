@@ -37,7 +37,7 @@
 #include <stdint.h>
 #include <stdlib.h>
 
-#include "../tmr2.h"
+#include "../tmr6.h"
 
 #include "mtouch_sensor.h"
 #include "mtouch_sensor_scan.h"
@@ -138,7 +138,7 @@ static scanFunction                     Sensor_scanB = MTOUCH_CVD_ScanB_0;
  * =======================================================================
  */
 static mtouch_sensor_t mtouch_sensor[MTOUCH_SENSORS] ={
-    {Sensor_AN7,MTOUCH_CVD_ScanA_0,MTOUCH_CVD_ScanB_0, MTOUCH_S0_OVERSAMPLING,0,0,0,0},
+    {Sensor_AN13,MTOUCH_CVD_ScanA_0,MTOUCH_CVD_ScanB_0, MTOUCH_S0_OVERSAMPLING,0,0,0,0},
 };
 
 /*
@@ -177,7 +177,7 @@ void MTOUCH_Sensor_InitializeAll(void)
  */
 void MTOUCH_Sensor_Scan_Initialize(void)
 {
-    T2CONbits.T2CKPS = 0x0;
+    T6CONbits.T6CKPS = 0x0;
 
     ADCON0 = (uint8_t)0;                            /* overwrite the ADC configuration for mTouch scan */
     ADCON1 = (uint8_t)( 0x1<<7 | 0x1<<4 | 0x0 );
@@ -344,9 +344,9 @@ static enum mtouch_sensor_error Sensor_Acq_ExecutePacket(mtouch_sensor_t* sensor
     sensor_globalFlags.packet_done = 0;
     packet_noise = 0;
     
-    TMR2_SetInterruptHandler(Sensor_Acq_ExecuteScan);  /* Use timer2 to schedule the scan */
-    TMR2_LoadPeriodRegister(sample_period);
-    TMR2_StartTimer();
+    TMR6_SetInterruptHandler(Sensor_Acq_ExecuteScan);  /* Use timer6 to schedule the scan */
+    TMR6_LoadPeriodRegister(sample_period);
+    TMR6_StartTimer();
     
     sensor_globalFlags.interrupted = false;
     
@@ -362,7 +362,7 @@ static enum mtouch_sensor_error Sensor_Acq_ExecutePacket(mtouch_sensor_t* sensor
     } while(sensor_globalFlags.packet_done == 0);
 
 
-    TMR2_StopTimer();
+    TMR6_StopTimer();
     ADCON0 = ADCON0_temp;       /* restore the previous ADC configuration */
     ADCON1 = ADCON1_temp;
     

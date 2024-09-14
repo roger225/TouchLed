@@ -1,24 +1,24 @@
 /**
-  EPWM Generated Driver File
+  EPWM1 Generated Driver File
 
   @Company
     Microchip Technology Inc.
 
   @File Name
-    epwm.h
+    epwm1.c
 
   @Summary
-    This is the generated driver implementation file for the EPWM driver using PIC10 / PIC12 / PIC16 / PIC18 MCUs
+    This is the generated driver implementation file for the EPWM1 driver using PIC10 / PIC12 / PIC16 / PIC18 MCUs
 
   @Description
-    This header file provides implementations for driver APIs for EPWM.
+    This source file provides implementations for driver APIs for EPWM1.
     Generation Information :
         Product Revision  :  PIC10 / PIC12 / PIC16 / PIC18 MCUs - 1.81.8
-        Device            :  PIC16F1823
+        Device            :  PIC16F1938
         Driver Version    :  2.01
     The generated drivers are tested against the following:
         Compiler          :  XC8 2.36 and above
-        MPLAB             :  MPLAB X 6.00
+         MPLAB 	          :  MPLAB X 6.00
 */
 
 /*
@@ -44,90 +44,58 @@
     SOFTWARE.
 */
 
-#ifndef EPWM_H
-#define EPWM_H
-
 /**
   Section: Included Files
 */
 
 #include <xc.h>
-#include <stdint.h>
+#include "epwm1.h"
 
-#ifdef __cplusplus  // Provide C++ Compatibility
+/**
+  Section: Macro Declarations
+*/
 
-    extern "C" {
-
-#endif
+#define PWM1_INITIALIZE_DUTY_VALUE    101
 
 /**
   Section: EPWM Module APIs
 */
 
-/**
-  @Summary
-    Initializes the EPWM
+void EPWM1_Initialize(void)
+{
+    // Set the EPWM1 to the options selected in the User Interface
+	
+	// CCP1M P1A,P1C: active high; P1B,P1D: active high; DC1B 1; P1M single; 
+	CCP1CON = 0x1C;    
+	
+	// CCP1ASE operating; PSS1BD0 low; PSS1AC0 low; CCP1AS0 disabled; 
+	ECCP1AS = 0x00;    
+	
+	// P1RSEN automatic_restart; P1DC0 0; 
+	PWM1CON = 0x80;    
+	
+	// STR1D P1D_to_port; STR1C P1C_to_port; STR1B P1B_to_port; STR1A P1A_to_CCP1M; STR1SYNC start_at_begin; 
+	PSTR1CON = 0x01;    
+	
+	// CCPR1H 0; 
+	CCPR1H = 0x00;    
+	
+	// CCPR1L 25; 
+	CCPR1L = 0x19;    
 
-  @Description
-    This routine initializes the EPWM module.
-    This routine must be called before any other EPWM routine is called.
-    This routine should only be called once during system initialization.
+	// Selecting CCPTMRS0
+	CCPTMRS0bits.C1TSEL = 0x0;
+}
 
-  @Preconditions
-    None
-
-  @Param
-    None
-
-  @Returns
-    None
-
-  @Comment
+void EPWM1_LoadDutyValue(uint16_t dutyValue)
+{
+   // Writing to 8 MSBs of pwm duty cycle in CCPRL register
+    CCPR1L = ((dutyValue & 0x03FC)>>2);
     
-
- @Example
-    <code>
-    uint16_t dutycycle;
-
-    ECCP_Initialize();
-	EPWM_LoadDutyValue(dutycycle);
-    </code>
- */
-void EPWM_Initialize(void);
-
-/**
-  @Summary
-    Loads 16-bit duty cycle.
-
-  @Description
-    This routine loads the 16 bit duty cycle value.
-
-  @Preconditions
-    EPWM_Initialize() function should have been called before calling this function.
-
-  @Param
-    Pass 16bit duty cycle value.
-
-  @Returns
-    None
-
-  @Example
-    <code>
-    uint16_t dutycycle;
-
-    EPWM_Initialize();
-    EPWM_LoadDutyValue(dutycycle);
-    </code>
-*/
-void EPWM_LoadDutyValue(uint16_t dutyValue);
-        
-#ifdef __cplusplus  // Provide C++ Compatibility
-
-    }
-
-#endif
-
-#endif	//EPWM_H
+   // Writing to 2 LSBs of pwm duty cycle in CCPCON register
+    CCP1CON = ((uint8_t)(CCP1CON & 0xCF) | ((dutyValue & 0x0003)<<4));
+}
 /**
  End of File
 */
+
