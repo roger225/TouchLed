@@ -55,6 +55,7 @@ void SYSTEM_Initialize(void)
     WDT_Initialize();
     EPWM_Initialize();
     TMR2_Initialize();
+    TMR1_Initialize();
     MTOUCH_Initialize();
 }
 

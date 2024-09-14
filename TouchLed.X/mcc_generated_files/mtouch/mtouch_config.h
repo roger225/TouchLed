@@ -63,6 +63,11 @@
      * =======================================================================
      */
 
+    /*
+     *  Defines the scan interval (milliseconds)
+     *  Range - 1 to 255
+     */
+    #define MTOUCH_SCAN_INTERVAL    20u      //unit ms
     
  
     /*** Sensor_AN7 ***/
@@ -81,7 +86,7 @@
     #define MTOUCH_S0_DISCON_TIME                3u
     /*-----------------------------------------------------------------------------*/
     #define MTOUCH_S0_OVERSAMPLING               32u
-    #define MTOUCH_SENSOR_ACTIVE_THRESHOLD               100u  
+    #define MTOUCH_SENSOR_ACTIVE_THRESHOLD               MTOUCH_LOWPOWER_DETECT_THRESHOLD 
 
     /* 
      * =======================================================================
@@ -109,6 +114,17 @@
 
 
 
+    /* 
+     * =======================================================================
+     * Low power Parameters
+     * =======================================================================
+     */
+     #define MTOUCH_LOWPOWER_SENSORS                1u
+     #define MTOUCH_LOWPOWER_SENSOR_LIST            {  Sensor_AN7 }
+     #define MTOUCH_LOWPOWER_DETECT_THRESHOLD       100u 
+     #define MTOUCH_LOWPOWER_SCAN_INTERVAL          256u   //unit ms
+     #define MTOUCH_LOWPOWER_INACTIVE_TIMEOUT       5000u   //unit ms   
+     #define MTOUCH_LOWPOWER_BASELINEUPDATE_TIME    5000u   //unit ms  
 
 #endif // MTOUCH_CONFIG_H
 /**

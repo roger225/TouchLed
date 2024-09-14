@@ -55,6 +55,11 @@
     bool    MTOUCH_Service_Mainloop         (void);
     void    MTOUCH_Tick                     (void);
     bool    MTOUCH_Service_isInProgress     (void);
+    bool    MTOUCH_Service_LowpowerState_Get(void);
+    void    MTOUCH_Service_enableLowpower   (void);
+    void    MTOUCH_Service_disableLowpower  (void);
+    void    MTOUCH_Service_enterLowpower    (void);
+    void    MTOUCH_Service_exitLowpower     (void);
     void    MTOUCH_requestInitSet           (void);
     bool    MTOUCH_requestInitGet           (void);
 /*

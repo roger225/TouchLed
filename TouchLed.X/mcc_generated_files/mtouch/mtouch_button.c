@@ -495,6 +495,16 @@ uint8_t MTOUCH_Button_State_Get(enum mtouch_button_names name)
         return 0;
 }
 
+void MTOUCH_Button_Baseline_ForceUpdate(void)
+{
+    enum mtouch_button_names button;
+    
+    for(button = 0;button<MTOUCH_BUTTONS;button++)
+    {
+        mtouch_button[button].baseline_count = MTOUCH_BUTTON_BASELINE_RATE - 1;
+    }
+
+}
 
 
 

@@ -100,6 +100,8 @@
     mtouch_sensor_sample_t      MTOUCH_Sensor_CVDSample_Get     (enum mtouch_sensor_names sensor);
     uint8_t                     MTOUCH_Sensor_Oversampling_Get  (enum mtouch_sensor_names name);
     void                        MTOUCH_Sensor_Oversampling_Set (enum mtouch_sensor_names name, uint8_t value);
+    bool                        MTOUCH_Lowpower_Sensor_isAnySensorActive(void);
+    bool                        MTOUCH_Lowpower_Sensor_isSamplingComplete(void);
 
     
     void                        MTOUCH_Sensor_NotifyInterruptOccurred(void);

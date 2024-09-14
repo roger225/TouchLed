@@ -43,6 +43,11 @@
 /* ======================================================================= *
  * Definitions
  * ======================================================================= */
+#define MTOUCH_SCAN_TIMER_TICK                  0.5 //unit us
+#define MTOUCH_SCAN_RELOAD                      (uint16_t)(65535-((MTOUCH_SCAN_INTERVAL*1000.0)/MTOUCH_SCAN_TIMER_TICK)) 
+#define MTOUCH_LOWPOWER_SCAN_RELOAD             (uint16_t)(65535-((MTOUCH_LOWPOWER_SCAN_INTERVAL*1000.0)/MTOUCH_SCAN_TIMER_TICK)) 
+#define MTOUCH_LOWPOWER_INACTIVE_TIMEOUT_CYCLE  (uint16_t)(MTOUCH_LOWPOWER_INACTIVE_TIMEOUT/MTOUCH_SCAN_INTERVAL)
+#define MTOUCH_LOWPOWER_BASELINEUPDATE_CYCLE    (uint16_t)(MTOUCH_LOWPOWER_BASELINEUPDATE_TIME/MTOUCH_LOWPOWER_SCAN_INTERVAL)
 
 
 /* ======================================================================= *
@@ -51,14 +56,38 @@
 
 static bool mtouch_time_toScan = false;
 static bool mtouch_request_init = false;
+static uint16_t mTouchScanReload = MTOUCH_SCAN_RELOAD;
+static bool mtouch_lowpowerEnabled = true;
+static bool mtouch_lowpowerActivated = false;
+static uint16_t mtouch_inactive_counter = 0;
+static uint16_t mtouch_sleep_baseline_counter = 0;
+const  uint8_t mtouch_sleep_sensors[] = MTOUCH_LOWPOWER_SENSOR_LIST;
 
 /*
  * =======================================================================
  *  Local Functions
  * =======================================================================
  */
+static void MTOUCH_ScanScheduler(void);   
+static void MTOUCH_Lowpower_Initialize();
 static bool MTOUCH_needReburst(void);
 
+/*
+ * =======================================================================
+ * MTOUCH_ScanScheduler()
+ * =======================================================================
+ *  The interrupt handler callback for scanrate timer  
+ */
+static void MTOUCH_ScanScheduler(void)         
+{
+  
+    //schedule the next timer1 interrupt
+    TMR1_WriteTimer(mTouchScanReload);
+    
+    //schedule the scan
+    mtouch_time_toScan = true;  
+
+}
 /*
  * =======================================================================
  * MTOUCH_Service_isInProgress()
@@ -71,6 +100,18 @@ bool MTOUCH_Service_isInProgress()
     return mtouch_time_toScan;
 }
 
+/*
+ * =======================================================================
+ * MTOUCH_Lowpower_Initialize()
+ * =======================================================================
+ *  initialize the registers and settings for low power operation
+ */
+static void MTOUCH_Lowpower_Initialize()
+{
+    /* Uncomment the line below if the part have VREGCON register*/
+    /* Enable low-power sleep mode for Voltage Regulator. */
+    // VREGCONbits.VREGPM = 1;
+}
 
 /*
  * =======================================================================
@@ -84,6 +125,8 @@ void MTOUCH_Initialize(void)
     MTOUCH_Button_InitializeAll();
     MTOUCH_Sensor_Sampled_ResetAll();
     MTOUCH_Sensor_Scan_Initialize();
+    MTOUCH_Lowpower_Initialize();
+    TMR1_SetInterruptHandler(MTOUCH_ScanScheduler);
 
 }
 
@@ -102,19 +145,67 @@ bool MTOUCH_Service_Mainloop(void)
         mtouch_request_init = false;
     }
 
-    /* In free running mode, the mTouch service will be executed once MTOUCH_Service_Mainloop gets called.*/
-    mtouch_time_toScan = true;
     
     if(mtouch_time_toScan)               
     {
         if(MTOUCH_Sensor_SampleAll() == false)     
             return false;  
 
+        if(mtouch_lowpowerActivated && mtouch_lowpowerEnabled)
+        {
+            mtouch_time_toScan = false;
+            MTOUCH_Sensor_Sampled_ResetAll();  
+
+            if(MTOUCH_Sensor_isAnySensorActive())
+            {
+                MTOUCH_Service_exitLowpower();
+                mtouch_inactive_counter = 0;
+            }
+            else
+            {
+                /* Exit low power temporarily for baseline update */
+                if((0u != MTOUCH_LOWPOWER_BASELINEUPDATE_CYCLE) &&
+                   (++mtouch_sleep_baseline_counter == MTOUCH_LOWPOWER_BASELINEUPDATE_CYCLE)) 
+                {
+                    MTOUCH_Button_Baseline_ForceUpdate();
+                    MTOUCH_Service_exitLowpower();
+                    mtouch_sleep_baseline_counter = 0;
+                    mtouch_inactive_counter = 
+                            MTOUCH_LOWPOWER_INACTIVE_TIMEOUT_CYCLE - 1;
+                }
+                SLEEP();
+                NOP();
+                NOP();
+            }
+            return true;
+        }
+        else
+        {
             MTOUCH_Button_ServiceAll();             /* Execute state machine for all buttons w/scanned sensors */
             mtouch_time_toScan = MTOUCH_needReburst();
             MTOUCH_Sensor_Sampled_ResetAll();  
             MTOUCH_Tick();
+            if(mtouch_lowpowerEnabled)
+            {
+                if(MTOUCH_Button_Buttonmask_Get())
+                {
+                    mtouch_inactive_counter = 0;
+                }
+                else
+                {
+                    if(++mtouch_inactive_counter == 
+                       MTOUCH_LOWPOWER_INACTIVE_TIMEOUT_CYCLE)
+                    {
+                        MTOUCH_Service_enterLowpower();
+                        mtouch_sleep_baseline_counter = 0;
+                        SLEEP();
+                        NOP();
+                        NOP();
+                    }
+                }
+            }
             return true;
+        }   
     }
     else                              
     {
@@ -144,6 +235,78 @@ void MTOUCH_Tick(void)
     return needReburst;
  }
 
+/*
+ * =======================================================================
+ * MTOUCH_Service_enterLowpower
+ * =======================================================================
+ */
+void MTOUCH_Service_enterLowpower(void)
+{
+    uint8_t i;
+    mtouch_lowpowerActivated = true;
+    
+    for(i=0;i<MTOUCH_SENSORS;i++)
+    {
+        MTOUCH_Sensor_Disable (i);
+    }
+    
+    for(i=0;i < sizeof(mtouch_sleep_sensors);i++)
+    {
+        MTOUCH_Sensor_Enable(mtouch_sleep_sensors[i]);
+    }
+
+    mTouchScanReload = MTOUCH_LOWPOWER_SCAN_RELOAD;
+    MTOUCH_Sensor_startLowpower();
+}
+
+/*
+ * =======================================================================
+ * MTOUCH_Service_exitLowpower
+ * =======================================================================
+ */
+void MTOUCH_Service_exitLowpower(void)
+{
+    uint8_t i;
+    
+    mtouch_lowpowerActivated = false;
+    mTouchScanReload = MTOUCH_SCAN_RELOAD;
+    
+    for(i=0;i<MTOUCH_SENSORS;i++)
+    {
+        MTOUCH_Sensor_Enable (i);
+    }
+    MTOUCH_Sensor_exitLowpower ();
+}
+
+/*
+ * =======================================================================
+ * MTOUCH_Service_LowpowerState_Get
+ * =======================================================================
+ */
+bool MTOUCH_Service_LowpowerState_Get(void)
+{
+    return mtouch_lowpowerActivated;
+}
+
+/*
+ * =======================================================================
+ * MTOUCH_Service_disableLowpower
+ * =======================================================================
+ */
+void MTOUCH_Service_disableLowpower(void)
+{
+     mtouch_lowpowerEnabled = false;
+}
+ 
+/*
+ * =======================================================================
+ * MTOUCH_Service_enableLowpower
+ * =======================================================================
+ */
+void MTOUCH_Service_enableLowpower(void)
+{
+    mtouch_lowpowerEnabled = true;
+}
 
 /*
  * =======================================================================

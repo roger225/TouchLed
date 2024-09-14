@@ -54,6 +54,7 @@
 
 */
 
+static uint8_t myTaskIsDone,myTaskStarted;
 
 void touch_example(void)
 {
@@ -81,5 +82,28 @@ void touch_example(void)
     }
     
     
+    /* The low power handling logic is inside MTOUCH_Service_Mainloop(). 
+       
+       The library provides the following APIs to enable/disable the low power 
+       mode from the mainline code.
+       
+       Typically, when a time critical task, like communication, is happening,
+       the user will disable the low power in order for the fastest response. 
+       After the task is done, the system needs to go back to low power mode.
+    */
+    if(myTaskIsDone)
+    {
+        MTOUCH_Service_enableLowpower();
+        myTaskIsDone = 0;
+    }
+    else if(myTaskStarted)
+    {
+        MTOUCH_Service_disableLowpower();
+        myTaskStarted = 0;
+    }
+    else
+    {
+        /* Keep the current low power state */
+    }
 
 }
