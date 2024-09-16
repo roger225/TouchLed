@@ -14,7 +14,7 @@
     This header file provides APIs for driver for .
     Generation Information :
         Product Revision  :  PIC10 / PIC12 / PIC16 / PIC18 MCUs - 1.81.8
-        Device            :  PIC16F1938
+        Device            :  PIC16F1829
         Driver Version    :  2.11
     The generated drivers are tested against the following:
         Compiler          :  XC8 2.36 and above
@@ -65,27 +65,29 @@
 #define PULL_UP_ENABLED      1
 #define PULL_UP_DISABLED     0
 
-// get/set RB5 procedures
-#define RB5_SetHigh()            do { LATBbits.LATB5 = 1; } while(0)
-#define RB5_SetLow()             do { LATBbits.LATB5 = 0; } while(0)
-#define RB5_Toggle()             do { LATBbits.LATB5 = ~LATBbits.LATB5; } while(0)
-#define RB5_GetValue()              PORTBbits.RB5
-#define RB5_SetDigitalInput()    do { TRISBbits.TRISB5 = 1; } while(0)
-#define RB5_SetDigitalOutput()   do { TRISBbits.TRISB5 = 0; } while(0)
-#define RB5_SetPullup()             do { WPUBbits.WPUB5 = 1; } while(0)
-#define RB5_ResetPullup()           do { WPUBbits.WPUB5 = 0; } while(0)
-#define RB5_SetAnalogMode()         do { ANSELBbits.ANSB5 = 1; } while(0)
-#define RB5_SetDigitalMode()        do { ANSELBbits.ANSB5 = 0; } while(0)
+// get/set RA0 procedures
+#define RA0_SetHigh()            do { LATAbits.LATA0 = 1; } while(0)
+#define RA0_SetLow()             do { LATAbits.LATA0 = 0; } while(0)
+#define RA0_Toggle()             do { LATAbits.LATA0 = ~LATAbits.LATA0; } while(0)
+#define RA0_GetValue()              PORTAbits.RA0
+#define RA0_SetDigitalInput()    do { TRISAbits.TRISA0 = 1; } while(0)
+#define RA0_SetDigitalOutput()   do { TRISAbits.TRISA0 = 0; } while(0)
+#define RA0_SetPullup()             do { WPUAbits.WPUA0 = 1; } while(0)
+#define RA0_ResetPullup()           do { WPUAbits.WPUA0 = 0; } while(0)
+#define RA0_SetAnalogMode()         do { ANSELAbits.ANSA0 = 1; } while(0)
+#define RA0_SetDigitalMode()        do { ANSELAbits.ANSA0 = 0; } while(0)
 
-// get/set RB6 procedures
-#define RB6_SetHigh()            do { LATBbits.LATB6 = 1; } while(0)
-#define RB6_SetLow()             do { LATBbits.LATB6 = 0; } while(0)
-#define RB6_Toggle()             do { LATBbits.LATB6 = ~LATBbits.LATB6; } while(0)
-#define RB6_GetValue()              PORTBbits.RB6
-#define RB6_SetDigitalInput()    do { TRISBbits.TRISB6 = 1; } while(0)
-#define RB6_SetDigitalOutput()   do { TRISBbits.TRISB6 = 0; } while(0)
-#define RB6_SetPullup()             do { WPUBbits.WPUB6 = 1; } while(0)
-#define RB6_ResetPullup()           do { WPUBbits.WPUB6 = 0; } while(0)
+// get/set RA1 procedures
+#define RA1_SetHigh()            do { LATAbits.LATA1 = 1; } while(0)
+#define RA1_SetLow()             do { LATAbits.LATA1 = 0; } while(0)
+#define RA1_Toggle()             do { LATAbits.LATA1 = ~LATAbits.LATA1; } while(0)
+#define RA1_GetValue()              PORTAbits.RA1
+#define RA1_SetDigitalInput()    do { TRISAbits.TRISA1 = 1; } while(0)
+#define RA1_SetDigitalOutput()   do { TRISAbits.TRISA1 = 0; } while(0)
+#define RA1_SetPullup()             do { WPUAbits.WPUA1 = 1; } while(0)
+#define RA1_ResetPullup()           do { WPUAbits.WPUA1 = 0; } while(0)
+#define RA1_SetAnalogMode()         do { ANSELAbits.ANSA1 = 1; } while(0)
+#define RA1_SetDigitalMode()        do { ANSELAbits.ANSA1 = 0; } while(0)
 
 // get/set RC2 procedures
 #define RC2_SetHigh()            do { LATCbits.LATC2 = 1; } while(0)
@@ -94,6 +96,20 @@
 #define RC2_GetValue()              PORTCbits.RC2
 #define RC2_SetDigitalInput()    do { TRISCbits.TRISC2 = 1; } while(0)
 #define RC2_SetDigitalOutput()   do { TRISCbits.TRISC2 = 0; } while(0)
+#define RC2_SetPullup()             do { WPUCbits.WPUC2 = 1; } while(0)
+#define RC2_ResetPullup()           do { WPUCbits.WPUC2 = 0; } while(0)
+#define RC2_SetAnalogMode()         do { ANSELCbits.ANSC2 = 1; } while(0)
+#define RC2_SetDigitalMode()        do { ANSELCbits.ANSC2 = 0; } while(0)
+
+// get/set RC5 procedures
+#define RC5_SetHigh()            do { LATCbits.LATC5 = 1; } while(0)
+#define RC5_SetLow()             do { LATCbits.LATC5 = 0; } while(0)
+#define RC5_Toggle()             do { LATCbits.LATC5 = ~LATCbits.LATC5; } while(0)
+#define RC5_GetValue()              PORTCbits.RC5
+#define RC5_SetDigitalInput()    do { TRISCbits.TRISC5 = 1; } while(0)
+#define RC5_SetDigitalOutput()   do { TRISCbits.TRISC5 = 0; } while(0)
+#define RC5_SetPullup()             do { WPUCbits.WPUC5 = 1; } while(0)
+#define RC5_ResetPullup()           do { WPUCbits.WPUC5 = 0; } while(0)
 
 /**
    @Param

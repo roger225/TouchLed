@@ -14,7 +14,7 @@
     This source file provides implementations for driver APIs for EPWM1.
     Generation Information :
         Product Revision  :  PIC10 / PIC12 / PIC16 / PIC18 MCUs - 1.81.8
-        Device            :  PIC16F1938
+        Device            :  PIC16F1829
         Driver Version    :  2.01
     The generated drivers are tested against the following:
         Compiler          :  XC8 2.36 and above
@@ -55,7 +55,7 @@
   Section: Macro Declarations
 */
 
-#define PWM1_INITIALIZE_DUTY_VALUE    101
+#define PWM1_INITIALIZE_DUTY_VALUE    50
 
 /**
   Section: EPWM Module APIs
@@ -65,26 +65,26 @@ void EPWM1_Initialize(void)
 {
     // Set the EPWM1 to the options selected in the User Interface
 	
-	// CCP1M P1A,P1C: active high; P1B,P1D: active high; DC1B 1; P1M single; 
-	CCP1CON = 0x1C;    
+	// CCP1M P1A,P1C: active high; P1B,P1D: active high; DC1B 2; P1M single; 
+	CCP1CON = 0x2C;    
 	
-	// CCP1ASE operating; PSS1BD0 low; PSS1AC0 low; CCP1AS0 disabled; 
+	// CCP1ASE operating; PSS1BD low; PSS1AC low; CCP1AS disabled; 
 	ECCP1AS = 0x00;    
 	
-	// P1RSEN automatic_restart; P1DC0 0; 
+	// P1RSEN automatic_restart; P1DC 0; 
 	PWM1CON = 0x80;    
 	
-	// STR1D P1D_to_port; STR1C P1C_to_port; STR1B P1B_to_port; STR1A P1A_to_CCP1M; STR1SYNC start_at_begin; 
-	PSTR1CON = 0x01;    
+	// STR1D P1D_to_CCP1M; STR1C P1C_to_port; STR1B P1B_to_port; STR1A P1A_to_CCP1M; STR1SYNC start_at_begin; 
+	PSTR1CON = 0x09;    
 	
 	// CCPR1H 0; 
 	CCPR1H = 0x00;    
 	
-	// CCPR1L 25; 
-	CCPR1L = 0x19;    
+	// CCPR1L 12; 
+	CCPR1L = 0x0C;    
 
-	// Selecting CCPTMRS0
-	CCPTMRS0bits.C1TSEL = 0x0;
+	// Selecting Timer6
+	CCPTMRSbits.C1TSEL = 0x2;
 }
 
 void EPWM1_LoadDutyValue(uint16_t dutyValue)

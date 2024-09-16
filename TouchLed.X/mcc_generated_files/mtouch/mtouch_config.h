@@ -70,16 +70,16 @@
     #define MTOUCH_SCAN_INTERVAL    20u      //unit ms
     
  
-    /*** Sensor_AN13 ***/
-    #define MTOUCH_S0_ADCON0_SENSOR              ( 0xd<<2 | 0x1 )
-    #define MTOUCH_S0_REF_ADCON0                 ( 0xd<<2 | 0x1 )
-    #define MTOUCH_S0_LAT                        LATB
-    #define MTOUCH_S0_TRIS                       TRISB
-    #define MTOUCH_S0_PIN                        5
-    #define MTOUCH_S0_REF_LAT                    LATB
-    #define MTOUCH_S0_REF_PIN                    5
-    #define MTOUCH_S0_GUARD_LAT                  LATB
-    #define MTOUCH_S0_GUARD_PIN                  6
+    /*** Sensor_AN0 ***/
+    #define MTOUCH_S0_ADCON0_SENSOR              ( 0x0<<2 | 0x1 )
+    #define MTOUCH_S0_REF_ADCON0                 ( 0x0<<2 | 0x1 )
+    #define MTOUCH_S0_LAT                        LATA
+    #define MTOUCH_S0_TRIS                       TRISA
+    #define MTOUCH_S0_PIN                        0
+    #define MTOUCH_S0_REF_LAT                    LATA
+    #define MTOUCH_S0_REF_PIN                    0
+    #define MTOUCH_S0_GUARD_LAT                  LATA
+    #define MTOUCH_S0_GUARD_PIN                  1
     #define MTOUCH_S0_PRECHARGE_TIME             16u
     #define MTOUCH_S0_ACQUISITION_TIME           8u
     #define MTOUCH_S0_SWITCH_TIME                0u
@@ -102,7 +102,7 @@
     #define MTOUCH_BUTTON_NEGATIVEDEVIATION         ((mtouch_button_statecounter_t)64u)
     #define MTOUCH_BUTTON_PRESSTIMEOUT              ((mtouch_button_statecounter_t)1000u)
 
-    #define MTOUCH_BUTTON_SENSOR_Button0             Sensor_AN13
+    #define MTOUCH_BUTTON_SENSOR_Button0             Sensor_AN0
 
     #define MTOUCH_BUTTON_THRESHOLD_Button0          100u
     
@@ -120,9 +120,9 @@
      * =======================================================================
      */
      #define MTOUCH_LOWPOWER_SENSORS                1u
-     #define MTOUCH_LOWPOWER_SENSOR_LIST            {  Sensor_AN13 }
+     #define MTOUCH_LOWPOWER_SENSOR_LIST            {  Sensor_AN0 }
      #define MTOUCH_LOWPOWER_DETECT_THRESHOLD       100u 
-     #define MTOUCH_LOWPOWER_SCAN_INTERVAL          256u   //unit ms
+     #define MTOUCH_LOWPOWER_SCAN_INTERVAL          128u   //unit ms
      #define MTOUCH_LOWPOWER_INACTIVE_TIMEOUT       5000u   //unit ms   
      #define MTOUCH_LOWPOWER_BASELINEUPDATE_TIME    5000u   //unit ms  
 

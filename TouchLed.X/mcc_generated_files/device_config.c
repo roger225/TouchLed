@@ -14,7 +14,7 @@
     This header file provides implementations for driver APIs for all modules selected in the GUI.
     Generation Information :
         Product Revision  :  PIC10 / PIC12 / PIC16 / PIC18 MCUs - 1.81.8
-        Device            :  PIC16F1938
+        Device            :  PIC16F1829
         Driver Version    :  2.00
     The generated drivers are tested against the following:
         Compiler          :  XC8 2.36 and above or later
@@ -48,7 +48,7 @@
 
 // CONFIG1
 #pragma config FOSC = INTOSC    // Oscillator Selection->INTOSC oscillator: I/O function on CLKIN pin
-#pragma config WDTE = ON    // Watchdog Timer Enable->WDT enabled
+#pragma config WDTE = SWDTEN    // Watchdog Timer Enable->WDT controlled by the SWDTEN bit in the WDTCON register
 #pragma config PWRTE = OFF    // Power-up Timer Enable->PWRT disabled
 #pragma config MCLRE = ON    // MCLR Pin Function Select->MCLR/VPP pin function is MCLR
 #pragma config CP = OFF    // Flash Program Memory Code Protection->Program memory code protection is disabled
@@ -60,8 +60,7 @@
 
 // CONFIG2
 #pragma config WRT = OFF    // Flash Memory Self-Write Protection->Write protection off
-#pragma config VCAPEN = OFF    // Voltage Regulator Capacitor Enable->All VCAP pin functionality is disabled
-#pragma config PLLEN = OFF    // PLL Enable->4x PLL disabled
+#pragma config PLLEN = ON    // PLL Enable->4x PLL enabled
 #pragma config STVREN = ON    // Stack Overflow/Underflow Reset Enable->Stack Overflow or Underflow will cause a Reset
 #pragma config BORV = LO    // Brown-out Reset Voltage Selection->Brown-out Reset Voltage (Vbor), low trip point selected.
 #pragma config LVP = ON    // Low-Voltage Programming Enable->Low-voltage programming enabled
