@@ -1,0 +1,51 @@
+(kicad_sch
+	(version 20231120)
+	(generator "eeschema")
+	(generator_version "8.0")
+	(uuid "fd7ca932-dd06-4631-8346-89d66cb3bbde")
+	(paper "A4")
+	(lib_symbols)
+	(sheet
+		(at 52.07 48.26)
+		(size 50.8 31.75)
+		(fields_autoplaced yes)
+		(stroke
+			(width 0.1524)
+			(type solid)
+		)
+		(fill
+			(color 0 0 0 0.0000)
+		)
+		(uuid "dcd53938-1002-4657-84eb-9079f15463d7")
+		(property "Sheetname" "BetteryManagement"
+			(at 52.07 47.5484 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left bottom)
+			)
+		)
+		(property "Sheetfile" "BetteryManagement.kicad_sch"
+			(at 52.07 80.5946 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left top)
+			)
+		)
+		(instances
+			(project "TouchLed"
+				(path "/fd7ca932-dd06-4631-8346-89d66cb3bbde"
+					(page "2")
+				)
+			)
+		)
+	)
+	(sheet_instances
+		(path "/"
+			(page "1")
+		)
+	)
+)

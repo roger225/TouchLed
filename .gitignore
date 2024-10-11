@@ -1,2 +1,5 @@
 TouchLed.X/build/
 TouchLed.X/dist/
+TouchLedPcb/TouchLed-backups/
+TouchLedPcb/*.bak
+TouchLedPcb/fp-info-cache
